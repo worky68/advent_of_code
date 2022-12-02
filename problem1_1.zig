@@ -45,7 +45,7 @@ const Order =  std.math.Order;
 const AllocPrintError = std.fmt.AllocPrintError;
 
 const elf = struct {
-    name: AllocPrintError![]u8,
+    name: []u8,
     calories: u32
 };
 
@@ -60,7 +60,7 @@ pub fn main() !void {
     const allocator = std.heap.page_allocator;
     var maxHeap = MaxHeap.init(allocator, {});
     defer maxHeap.deinit();
-    var elf_num: u32 = 1;
+    var elf_num: u8 = 1;
 
     var file = try std.fs.cwd().openFile("input1_1.txt", .{});
     defer file.close();
@@ -68,7 +68,7 @@ pub fn main() !void {
     var buf_reader = std.io.bufferedReader(file.reader());
     var in = buf_reader.reader();
     var current_elf = elf {
-        .name = std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
+        .name = try std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
         .calories = 0
     };
     var buf: [1024]u8 = undefined;
@@ -79,7 +79,7 @@ pub fn main() !void {
             try maxHeap.add(current_elf);
             elf_num = elf_num + 1;
             current_elf = elf {
-                .name = std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
+                .name = try std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
                 .calories = 0
             };
             continue;
@@ -89,6 +89,6 @@ pub fn main() !void {
 
     }
     const maxElf = maxHeap.remove();
-    std.debug.print("{s} with {}", .{try maxElf.name , maxElf.calories});
+    std.debug.print("{s} with {}", .{maxElf.name , maxElf.calories});
 
 }
