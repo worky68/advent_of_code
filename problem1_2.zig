@@ -13,7 +13,7 @@ const Order =  std.math.Order;
 const AllocPrintError = std.fmt.AllocPrintError;
 
 const elf = struct {
-    name: AllocPrintError![]u8,
+    name: []u8,
     calories: u32
 };
 
@@ -28,7 +28,7 @@ pub fn main() !void {
     const allocator = std.heap.page_allocator;
     var maxHeap = MaxHeap.init(allocator, {});
     defer maxHeap.deinit();
-    var elf_num: u32 = 1;
+    var elf_num: u16 = 1;
 
     var file = try std.fs.cwd().openFile("input1_2.txt", .{});
     defer file.close();
@@ -36,7 +36,7 @@ pub fn main() !void {
     var buf_reader = std.io.bufferedReader(file.reader());
     var in = buf_reader.reader();
     var current_elf = elf {
-        .name = std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
+        .name = try std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
         .calories = 0
     };
     var buf: [1024]u8 = undefined;
@@ -47,7 +47,7 @@ pub fn main() !void {
             try maxHeap.add(current_elf);
             elf_num = elf_num + 1;
             current_elf = elf {
-                .name = std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
+                .name = try std.fmt.allocPrint(allocator, "{s}{}", .{"elf", elf_num}),
                 .calories = 0
             };
             continue;
@@ -57,15 +57,14 @@ pub fn main() !void {
 
     }
     const maxElf1 = maxHeap.remove();
-    std.debug.print("{s} with {}\n", .{try maxElf1.name , maxElf1.calories});
+    std.debug.print("{s} with {}\n", .{maxElf1.name , maxElf1.calories});
 
     const maxElf2 = maxHeap.remove();
-    std.debug.print("{s} with {}\n", .{try maxElf2.name , maxElf2.calories});
+    std.debug.print("{s} with {}\n", .{maxElf2.name , maxElf2.calories});
 
     const maxElf3 = maxHeap.remove();
-    std.debug.print("{s} with {}\n", .{try maxElf3.name , maxElf3.calories});
+    std.debug.print("{s} with {}\n", .{maxElf3.name , maxElf3.calories});
     
     const total: u32 = maxElf1.calories + maxElf2.calories + maxElf3.calories;
-    std.debug.print("Total with {}\n", .{total});
-
+    std.debug.print("Total {}\n", .{total});
 }
