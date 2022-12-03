@@ -39,7 +39,6 @@
 
 // Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
 
-
 const std = @import("std");
 const Order =  std.math.Order;
 const AllocPrintError = std.fmt.AllocPrintError;
@@ -90,5 +89,4 @@ pub fn main() !void {
     }
     const maxElf = maxHeap.remove();
     std.debug.print("{s} with {}", .{maxElf.name , maxElf.calories});
-
 }
