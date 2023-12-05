@@ -41,7 +41,7 @@ while j in 0..<lines.len:
     echo(j+1);
     var line = lines[j];
     var i = 0;
-    # echo(fmt"line = {line}")
+
     while(i < line.len):
         var num = "";
         if(isDigit(line[i])):
@@ -49,36 +49,26 @@ while j in 0..<lines.len:
             while(i < line.len and isDigit(line[i])):
                 num &= line[i];
                 inc i;
-                # echo(fmt"i = {i}")
-            # echo(fmt"num = {num}")
+
             var add = false;
             # scan current line
             if(i <= line.len-1):
-                # echo("checking current line next");
-                # echo(fmt"line[i+1] = {line[i]}");
                 if(line[i] != '.' and not isDigit(line[i])):
-                    # echo(fmt"curret line add {num}")
                     add = true;
             if(start-1 >= 0):
-                # echo("checking current line prev");
                 if(line[start-1] != '.' and not isDigit(line[start-1])):
-                    # echo(fmt"curret line add {num}")
                     add = true;
 
             # scan previous line
             if(j-1 >= 0):
-                # echo("checking prev")
                 for l in start-1..i:
                     if(l >= 0 and l < lines[j-1].len and lines[j-1][l] != '.' and not isDigit(lines[j-1][l])):
-                        # echo(fmt"previous line add {num}")
                         add = true;
 
             # scan next line
             if(j+1 <= lines.len-1):
-                # echo("checking next")
                 for l in start-1..i:
                     if(l >= 0 and l < lines[j+1].len and lines[j+1][l] != '.' and not isDigit(lines[j+1][l])):
-                        # echo(fmt"next line add {num}")
                         add = true;
             if(add):
                 sum += parseInt(num);

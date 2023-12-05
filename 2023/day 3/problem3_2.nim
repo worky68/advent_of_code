@@ -35,15 +35,16 @@ var sum = 0;
 
 var j = 0;
 while j in 0..<lines.len:
-    # echo(j+1);
+
     var line = lines[j];
     var i = 0;
-    # echo(fmt"line = {line}")
+
     while(i < line.len):
         if(line[i] == '*'):
             var start = i;
             var first = "";
             var second = "";
+
             # check current line
             if(start-1 >= 0 and start+1 < line.len):
                 if(isDigit(line[start-1]) and isDigit(line[start+1])):
@@ -152,7 +153,6 @@ while j in 0..<lines.len:
                         second &= $lines[j+1][k];
                         inc k
 
-            # echo(fmt"first = {first} second = {second}")
             if(first != "" and second != ""):
                 sum += parseInt(first) * parseInt(second);
 
