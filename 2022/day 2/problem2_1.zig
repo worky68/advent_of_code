@@ -47,7 +47,7 @@ fn mapMove(move: u8) Move {
 
 fn score(theirs: Move, ours: Move) u8 {
 
-    var result: u8 = @enumToInt(ours) + 1;
+    var result: u8 = @intFromEnum(ours) + 1;
 
     if(theirs == Move.ROCK) {
         if(ours == Move.PAPER) {
@@ -100,5 +100,5 @@ pub fn main() !void {
         total += score(theirs, ours);
     }
 
-    std.debug.print("Total Score: {}", .{total});
+    std.debug.print("Total Score: {}\n", .{total});
 }

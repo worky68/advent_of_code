@@ -19,61 +19,56 @@ const Move = enum {
     PAPER,
     SCISSORS,
     pub fn ordinal(self: Move) u8 {
-        return @as(u8, 1 + @enumToInt(self));
+        return @as(u8, 1 + @intFromEnum(self));
     }
 };
 
-const Outcome = enum {
-    LOSS,
-    DRAW,
-    WIN
-};
+const Outcome = enum { LOSS, DRAW, WIN };
 
 fn mapMove(move: u8) Move {
-    return switch(move) {
+    return switch (move) {
         'A' => Move.ROCK,
         'B' => Move.PAPER,
         'C' => Move.SCISSORS,
-        else => unreachable
+        else => unreachable,
     };
 }
 
 fn mapOutcome(outcome: u8) Outcome {
-    return switch(outcome) {
+    return switch (outcome) {
         'X' => Outcome.LOSS,
         'Y' => Outcome.DRAW,
         'Z' => Outcome.WIN,
-        else => unreachable
+        else => unreachable,
     };
 }
-
 
 fn score(theirs: Move, req_outcome: Outcome) u8 {
     var result: u8 = 1;
 
-    result += switch(theirs) {
+    result += switch (theirs) {
         Move.ROCK => {
-            if(req_outcome == Outcome.LOSS) {
-                return  Move.SCISSORS.ordinal();
-            } else if(req_outcome == Outcome.DRAW) {
-                return  theirs.ordinal() + 3;
+            if (req_outcome == Outcome.LOSS) {
+                return Move.SCISSORS.ordinal();
+            } else if (req_outcome == Outcome.DRAW) {
+                return theirs.ordinal() + 3;
             } else {
-                return  Move.PAPER.ordinal() + 6;
+                return Move.PAPER.ordinal() + 6;
             }
         },
         Move.PAPER => {
-            if(req_outcome == Outcome.LOSS) {
+            if (req_outcome == Outcome.LOSS) {
                 return Move.ROCK.ordinal();
-            } else if(req_outcome == Outcome.DRAW) {
+            } else if (req_outcome == Outcome.DRAW) {
                 return theirs.ordinal() + 3;
             } else {
                 return Move.SCISSORS.ordinal() + 6;
             }
         },
         Move.SCISSORS => {
-            if(req_outcome == Outcome.LOSS) {
+            if (req_outcome == Outcome.LOSS) {
                 return Move.PAPER.ordinal();
-            } else if(req_outcome == Outcome.DRAW) {
+            } else if (req_outcome == Outcome.DRAW) {
                 return theirs.ordinal() + 3;
             } else {
                 return Move.ROCK.ordinal() + 6;
@@ -102,5 +97,5 @@ pub fn main() !void {
         total += score(theirs, req_outcome);
     }
 
-    std.debug.print("Total Score: {}", .{total});
+    std.debug.print("Total Score: {}\n", .{total});
 }
