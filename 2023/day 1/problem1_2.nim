@@ -58,7 +58,6 @@ proc findLastDigitWord(line: string): (int, string) =
     var last = (-1, "");
     for digit in digits.keys:
         var index = line.rfind(digit, 0);
-        # echo(fmt"digt = {digit} index = {index}")
         if index != -1 and index > last[0]:
             last = (index, digit)
     return last; 
@@ -73,7 +72,7 @@ for line in lines:
     var last = "";
     var firstDigitWord = findFirstDigitWord(line);
     var firstDigit = findFirstDigit(line);
-    # echo(fmt"firstDigitWord = {firstDigitWord} firstDigit = {firstDigit}");
+
     if(firstDigitWord[0] == -1):
         first = firstDigit[1];
     elif(firstDigit[0] == -1):
@@ -86,7 +85,7 @@ for line in lines:
 
     var lastDigitWord = findLastDigitWord(line);
     var lastDigit = findLastDigit(line);
-    # echo(fmt"lastDigitWord = {lastDigitWord} lastDigit = {lastDigit}");
+
     if(lastDigitWord[0] == -1):
         last = lastDigit[1];
     elif(lastDigit[0] == -1):
@@ -96,7 +95,7 @@ for line in lines:
             last = lastDigit[1];
         else:
             last = digits[lastDigitWord[1]];
-    echo(fmt"line {i} first = {first} last = {last}");
+
     sum += parseInt(first & last);
     inc i;
 echo(fmt"sum = {sum}");
