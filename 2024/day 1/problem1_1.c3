@@ -61,9 +61,9 @@ fn int main(String[] args) {
   String[] input = rawInput.split("\n");
 
   foreach(s : input) {
-    String[] split = s.split("  ");
-    leftHeap.push(libc::atoi(split[0].trim()));
-    rightHeap.push(libc::atoi(split[1].trim()));
+    String[] split = s.split("   ");
+    leftHeap.push(libc::atoi(split[0]));
+    rightHeap.push(libc::atoi(split[1]));
   }
   
   int sum = 0;

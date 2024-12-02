@@ -52,10 +52,10 @@ fn int main(String[] args) {
   String[] input = rawInput.split("\n");
 
   foreach(s : input) {
-    String[] split = s.split("  ");
-    int lv = libc::atoi(split[0].trim());
+    String[] split = s.split("   ");
+    int lv = libc::atoi(split[0]);
     leftList.push(lv);
-    int rv = libc::atoi(split[1].trim());
+    int rv = libc::atoi(split[1]);
     if(count.has_key(rv)) {
       count.set(rv, count.get(rv)!! + 1);
     } else {
