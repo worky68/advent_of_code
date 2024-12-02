@@ -30,6 +30,7 @@
 
 // Once again consider your left and right lists. What is their similarity score?
 import std::collections::list;
+import std::collections::map;
 import std::io::file;
 import std::math;
 import libc;
@@ -40,9 +41,9 @@ fn int main(String[] args) {
   leftList.new_init();
   defer leftList.free();
 
-  List(<int>) rightList;
-  rightList.new_init();
-  defer rightList.free();
+  HashMap(<int, int>) count;
+  count.new_init();
+  defer count.free();
 
   String inputFile = args[1];
   String rawInput = ((String) file::load_new(inputFile)!!).trim();
@@ -52,21 +53,22 @@ fn int main(String[] args) {
 
   foreach(s : input) {
     String[] split = s.split("  ");
-    leftList.push(libc::atoi(split[0].trim()));
-    rightList.push(libc::atoi(split[1].trim()));
+    int lv = libc::atoi(split[0].trim());
+    leftList.push(lv);
+    int rv = libc::atoi(split[1].trim());
+    if(count.has_key(rv)) {
+      count.set(rv, count.get(rv)!! + 1);
+    } else {
+      count.set(rv, 1);
+    }
   }
   
   int sum = 0;
 
-  while(!leftList.is_empty()) {
-    int value = leftList.pop()!!;
-    int count = 0;
-    foreach(v : rightList) {
-      if(value == v) {
-        count = count + 1;
-      }
+  foreach(v : leftList) {
+    if(count.has_key(v)) {
+      sum = sum + (v * count.get(v)!!); 
     }
-    sum = sum + (value * count);
   }
 
   io::printfn("sum = %d", sum);
