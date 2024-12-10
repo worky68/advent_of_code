@@ -33,7 +33,6 @@ import std::collections::list;
 import std::collections::map;
 import std::io::file;
 import std::math;
-import libc;
 
 fn int main(String[] args) {
 
@@ -46,16 +45,16 @@ fn int main(String[] args) {
   defer count.free();
 
   String inputFile = args[1];
-  String rawInput = ((String) file::load_new(inputFile)!!).trim();
-  defer rawInput.free();
+  String input = ((String) file::load_new(inputFile)!!).trim();
+  defer input.free();
 
-  String[] input = rawInput.split("\n");
+  String[] lines = input.split("\n");
 
-  foreach(s : input) {
-    String[] split = s.split("   ");
-    int lv = libc::atoi(split[0]);
+  foreach(line : lines) {
+    String[] split = line.split("   ");
+    int lv = split[0].to_integer(int)!!;
     leftList.push(lv);
-    int rv = libc::atoi(split[1]);
+    int rv = split[1].to_integer(int)!!;
     if(count.has_key(rv)) {
       count.set(rv, count.get(rv)!! + 1);
     } else {

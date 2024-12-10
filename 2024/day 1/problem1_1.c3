@@ -42,7 +42,6 @@
 import std::collections::priorityqueue;
 import std::io::file;
 import std::math;
-import libc;
 
 fn int main(String[] args) {
 
@@ -55,15 +54,15 @@ fn int main(String[] args) {
   defer rightHeap.free();
 
   String inputFile = args[1];
-  String rawInput = ((String) file::load_new(inputFile)!!).trim();
-  defer rawInput.free();
+  String input = ((String) file::load_new(inputFile)!!).trim();
+  defer input.free();
 
-  String[] input = rawInput.split("\n");
+  String[] lines = input.split("\n");
 
-  foreach(s : input) {
-    String[] split = s.split("   ");
-    leftHeap.push(libc::atoi(split[0]));
-    rightHeap.push(libc::atoi(split[1]));
+  foreach(line : lines) {
+    String[] split = line.split("   ");
+    leftHeap.push(split[0].to_integer(int)!!);
+    rightHeap.push(split[1].to_integer(int)!!);
   }
   
   int sum = 0;
