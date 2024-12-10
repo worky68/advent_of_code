@@ -37,21 +37,18 @@ import std::math;
 fn int main(String[] args) {
 
   List(<int>) leftList;
-  leftList.new_init();
-  defer leftList.free();
+  leftList.temp_init();
 
   HashMap(<int, int>) count;
-  count.new_init();
-  defer count.free();
+  count.temp_init();
 
   String inputFile = args[1];
-  String input = ((String) file::load_new(inputFile)!!).trim();
-  defer input.free();
+  String input = ((String) file::load_temp(inputFile)!!).trim();
 
-  String[] lines = input.split("\n");
+  String[] lines = input.tsplit("\n");
 
   foreach(line : lines) {
-    String[] split = line.split("   ");
+    String[] split = line.tsplit("   ");
     int lv = split[0].to_integer(int)!!;
     leftList.push(lv);
     int rv = split[1].to_integer(int)!!;

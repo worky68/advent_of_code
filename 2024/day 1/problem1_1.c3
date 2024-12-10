@@ -46,21 +46,18 @@ import std::math;
 fn int main(String[] args) {
 
   PriorityQueue(<int>) leftHeap;
-  leftHeap.new_init();
-  defer leftHeap.free();
+  leftHeap.temp_init();
 
   PriorityQueue(<int>) rightHeap;
-  rightHeap.new_init();
-  defer rightHeap.free();
+  rightHeap.temp_init();
 
   String inputFile = args[1];
-  String input = ((String) file::load_new(inputFile)!!).trim();
-  defer input.free();
+  String input = ((String) file::load_temp(inputFile)!!).trim();
 
-  String[] lines = input.split("\n");
+  String[] lines = input.tsplit("\n");
 
   foreach(line : lines) {
-    String[] split = line.split("   ");
+    String[] split = line.tsplit("   ");
     leftHeap.push(split[0].to_integer(int)!!);
     rightHeap.push(split[1].to_integer(int)!!);
   }
