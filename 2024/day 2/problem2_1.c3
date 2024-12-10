@@ -71,13 +71,12 @@ fn bool safety_check(String[] data) {
 
 fn int main(String[] args) {
   String inputFile = args[1];
-  String input = ((String) file::load_new(inputFile)!!).trim();
-  defer input.free();
+  String input = ((String) file::load_temp(inputFile)!!).trim();
 
-  String[] lines = input.split("\n");
+  String[] lines = input.tsplit("\n");
   int sum = 0;
   foreach(line : lines) {
-    String[] data = line.split(" ");
+    String[] data = line.tsplit(" ");
     bool is_safe = safety_check(data);
 
     if(is_safe) {
