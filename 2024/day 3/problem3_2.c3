@@ -1,6 +1,6 @@
 // --- Part Two ---
 
-// As you scan through the corrupted memory, you notice that some of the conditional statements are also still intact. If you handle some of the uncorrupted conditional statements in the program, you might be able to get an even more accurate result.
+// As you scan through the corrupted lex, you notice that some of the conditional statements are also still intact. If you handle some of the uncorrupted conditional statements in the program, you might be able to get an even more accurate result.
 
 // There are two new instructions you'll need to handle:
 
@@ -13,7 +13,7 @@
 
 // xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))
 
-// This corrupted memory is similar to the example from before, but this time the mul(5,5) and mul(11,8) instructions are disabled because there is a don't() instruction before them. The other mul instructions function normally, including the one at the end that gets re-enabled by a do() instruction.
+// This corrupted lex is similar to the example from before, but this time the mul(5,5) and mul(11,8) instructions are disabled because there is a don't() instruction before them. The other mul instructions function normally, including the one at the end that gets re-enabled by a do() instruction.
 
 // This time, the sum of the results is 48 (2*4 + 8*5).
 
@@ -23,28 +23,28 @@ import std::io;
 import std::core::dstring;
 import std::ascii;
 
-struct Memory {
+struct Lexer {
   char* start;
   char* current;
   int length;
   bool do_mul;
 }
 
-fn char Memory.peek(&self) {
+fn char Lexer.peek(&self) {
   if(self.isAtEnd()) return '\0';
   return *self.current;
 }
 
-fn char Memory.advance(&self) {
+fn char Lexer.advance(&self) {
   self.current++;
   return self.current[-1];
 }
 
-fn bool Memory.isAtEnd(&self) {
+fn bool Lexer.isAtEnd(&self) {
   return *self.current == '\0';
 }
 
-fn int Memory.number(&self) {
+fn int Lexer.number(&self) {
   self.start = self.current;
   while(ascii::is_digit(self.peek())) self.advance();
 
@@ -75,35 +75,35 @@ fn int main(String[] args) {
   int sum = 0;
   int i = 0;
 
-  Memory memory;
-  memory.start = (char*) &input[0];
-  memory.current = (char*) &input[0];
-  memory.length = input.len;
-  memory.do_mul = true;
+  Lexer lex;
+  lex.start = (char*) &input[0];
+  lex.current = (char*) &input[0];
+  lex.length = input.len;
+  lex.do_mul = true;
 
-  while(!memory.isAtEnd()) {
-    memory.start = memory.current;
-    char c = memory.advance();
+  while(!lex.isAtEnd()) {
+    lex.start = lex.current;
+    char c = lex.advance();
 
-    if OUT: (c == 'm' && memory.do_mul) {
+    if OUT: (c == 'm' && lex.do_mul) {
 
-      if(memory.advance() == 'u' && memory.advance() == 'l') {
+      if(lex.advance() == 'u' && lex.advance() == 'l') {
 
-        char lparen = memory.advance();
+        char lparen = lex.advance();
         if(lparen != '(') {
           break OUT;
         }
 
-        int num1 = memory.number();
+        int num1 = lex.number();
 
-        char comma = memory.advance();
+        char comma = lex.advance();
         if(comma != ',') {
           break OUT;
         }
 
-        int num2 = memory.number();
+        int num2 = lex.number();
 
-        char rparen = memory.advance();
+        char rparen = lex.advance();
         if(rparen != ')') {
           break OUT;
         }
@@ -111,21 +111,21 @@ fn int main(String[] args) {
         sum = sum + (num1 * num2);
       }
     } else if(c == 'd') {
-      if(memory.advance() == 'o') {;
-        if(memory.peek() == '(') {
-          memory.advance();
-          if(memory.peek() == ')') {
-            memory.advance();
-            memory.do_mul = true;
+      if(lex.advance() == 'o') {;
+        if(lex.peek() == '(') {
+          lex.advance();
+          if(lex.peek() == ')') {
+            lex.advance();
+            lex.do_mul = true;
           }
-        } else if(memory.peek() == 'n') {
-          memory.advance();
-          if(memory.peek() == '\'') {
-            memory.advance();
-            if(memory.peek() == 't') {
-              memory.advance();
-              if(memory.advance() == '(' && memory.advance() == ')') {
-                memory.do_mul = false;
+        } else if(lex.peek() == 'n') {
+          lex.advance();
+          if(lex.peek() == '\'') {
+            lex.advance();
+            if(lex.peek() == 't') {
+              lex.advance();
+              if(lex.advance() == '(' && lex.advance() == ')') {
+                lex.do_mul = false;
               }
             }
           }
