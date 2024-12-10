@@ -44,8 +44,9 @@ import std::core::dstring;
 
 fn void main(String[] args) {
   String inputFile = args[1];
-  String input = (String) file::load_new(inputFile)!!;
-  String[] lines = input.split("\n");
+  String input = (String) file::load_temp(inputFile)!!;
+
+  String[] lines = input.tsplit("\n");
 
   int sum = 0;
 
